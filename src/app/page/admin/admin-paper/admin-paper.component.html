@@ -1,0 +1,39 @@
+<ng-container *ngIf="isEditModel">
+    <a (click)="cancelEdit()">
+        <i class="anticon anticon-rollback"></i> 取消编辑
+    </a>
+    <nz-divider></nz-divider>
+    <app-admin-paper-add [paper]="editPaper"></app-admin-paper-add>
+</ng-container>
+<nz-table #basicTable [nzData]="papers">
+    <thead>
+        <tr>
+            <th>编号</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data">
+            <td>{{data.number}}</td>
+            <td>{{data.status === 1 ? '激活' : '可编辑'}}</td>
+            <td>
+                <a (click)="preview(data)">预览</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <ng-container *ngIf="data.status === 0">
+                    <a (click)="active(data)"> 激活</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="edit(data)">
+                        <i class="anticon anticon-edit"></i> 编辑</a>
+                </ng-container>
+                <a *ngIf="data.status === 1" (click)="inactive(data)"> 取消激活</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <nz-popconfirm [nzTitle]="'确定删除？'" (nzOnConfirm)="delete(data)">
+                    <a nz-popconfirm class="text-danger">
+                        <i class="anticon anticon-delete"></i> 删除
+                    </a>
+                </nz-popconfirm>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>

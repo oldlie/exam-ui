@@ -1,0 +1,100 @@
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">编号</nz-form-label>
+    <nz-form-control [nzValidateStatus]="status.number.text" [nzSpan]="12" (change)="handleNumberChange($event)" nzHasFeedback>
+      <input nz-input [(ngModel)]="exam.number" name="number">
+      <nz-form-explain>请输入编号</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">考生选题时长</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-input-number name="checkPaperTime" [(ngModel)]="exam.checkPaperTime" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>&nbsp;分钟
+      <nz-form-explain>请输入考生选题时长</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">考试开始时间</nz-form-label>
+    <nz-form-control [nzValidateStatus]="status.start.text" [nzSpan]="12" (change)="handleDateChange($event)" nzHasFeedback>
+      <nz-date-picker name="start" [(ngModel)]="exam.start" nzShowTime nzFormat="yyyy-MM-dd HH:mm:ss" nzPlaceHolder="选择考试时间" (ngModelChange)="onDateTimeChange($event)"
+        (nzOnOk)="onDateTimeOk($event)"></nz-date-picker>
+      <nz-form-explain>请输开始时间</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">考试时长</nz-form-label>
+    <nz-form-control [nzSpan]="12">
+      <nz-input-number name="minute" [(ngModel)]="exam.minute" [nzMin]="1" [nzMax]="1000" [nzStep]="1"></nz-input-number>&nbsp;分钟
+      <nz-form-explain>请输入考试时长</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control [nzSpan]="12" [nzOffset]="5">
+      <button nz-button (click)="addStudent()" [disabled]="exam.id <= 0">添加考生</button>
+      &nbsp;
+      <button nz-button nzType="primary" (click)="save()">保存考试</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
+
+<nz-table #basicTable [(nzData)]="studentList">
+  <thead>
+    <tr>
+      <th>姓名</th>
+      <th>考号</th>
+      <th>开关</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data">
+      <td>{{data.name}}</td>
+      <td>{{data.number}}</td>
+      <td>
+        <nz-switch [nzDisabled]="true" [(ngModel)]="data.flag" nzCheckedChildren="开" nzUnCheckedChildren="关"></nz-switch>
+      </td>
+      <td>
+
+        <nz-popconfirm [nzTitle]="'确定删除？'" (nzOnConfirm)="deleteStudent(data)">
+          <a nz-popconfirm class="text-danger">
+            <i class="anticon anticon-delete"></i> 删除
+          </a>
+        </nz-popconfirm>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-modal [(nzVisible)]="isVisible" nzTitle="添加考生" (nzOnCancel)="handleStudentDialogCancel()" (nzOnOk)="handleStudentDialogOk()">
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">考生姓名</nz-form-label>
+    <nz-form-control [nzValidateStatus]="studentStatus.name.text" [nzSpan]="12" (change)="handlStudentNameChange($event)" nzHasFeedback>
+      <input nz-input [(ngModel)]="newStudent.name" name="studentName">
+      <nz-form-explain>请输入考生姓名</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">考号</nz-form-label>
+    <nz-form-control [nzValidateStatus]="studentStatus.number.text" [nzSpan]="12" (change)="handlStudentNumberChange($event)"
+      nzHasFeedback>
+      <input nz-input [(ngModel)]="newStudent.number" name="studentNumber">
+      <nz-form-explain>请输入考号</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSpan]="12" [nzOffset]="5">
+      <nz-switch name="model" [(ngModel)]="isFixed" nzCheckedChildren="固定" nzUnCheckedChildren="随机"></nz-switch>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item *ngIf="isFixed">
+    <nz-form-control [nzSpan]="12" [nzOffset]="5">
+      <nz-select name="paper" style="width: 120px;" [(ngModel)]="paperId">
+          <nz-option *ngFor="let paper of activePaper" [nzValue]="paper.id" [nzLabel]="paper.number"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+</nz-modal>

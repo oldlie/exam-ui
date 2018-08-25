@@ -1,0 +1,23 @@
+<div style="width: 600px;">
+    <form nz-form>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">账户</nz-form-label>
+          <nz-form-control [nzValidateStatus]="usernameStatus.text" [nzSpan]="12" (change)="handleUsernameChange($event)" nzHasFeedback>
+            <input nz-input [(ngModel)]="username" name="username">
+            <nz-form-explain>请输入账号</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="5">密码</nz-form-label>
+          <nz-form-control [nzValidateStatus]="passowrdStatus.text" [nzSpan]="12" (change)="handlePasswordChange($event)" nzHasFeedback>
+            <input type="password" nz-input [(ngModel)]="passowrd" name="passowrd">
+            <nz-form-explain>请输入密码</nz-form-explain>
+          </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzOffset]="7" [nzSpan]="12">
+            <button nz-button nzType="primary" (click)="login()">登录</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
+</div>

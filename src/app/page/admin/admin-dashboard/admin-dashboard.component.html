@@ -1,0 +1,47 @@
+<div nz-row>
+  <div nz-col nzSpan="24">
+    <nz-affix>
+      <a (click)="signout()"  style="float: right;">
+        <span>退出</span>
+      </a>
+    </nz-affix>
+  </div>
+</div>
+
+<nz-tabset [(nzSelectedIndex)]="tabIndex">
+  <nz-tab nzTitle="考试列表">
+    <app-admin-exam *ngIf="tabIndex === 0"></app-admin-exam>
+  </nz-tab>
+  <nz-tab nzTitle="新增考试">
+    <app-admin-exam-add *ngIf="tabIndex === 1" [exam]="exam"></app-admin-exam-add>
+  </nz-tab>
+  <nz-tab nzTitle="试卷列表">
+    <app-admin-paper *ngIf="tabIndex === 2"></app-admin-paper>
+  </nz-tab>
+  <nz-tab nzTitle="新增试卷">
+    <app-admin-paper-add *ngIf="tabIndex === 3" [paper]="paper"></app-admin-paper-add>
+  </nz-tab>
+  <nz-tab nzTitle="修改密码">
+    <form *ngIf="tabIndex === 4" nz-form>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">新密码</nz-form-label>
+        <nz-form-control [nzValidateStatus]="password1Status.text" [nzSpan]="12" (change)="handlePassword1Change($event)" nzHasFeedback>
+          <input nz-input type="password" [(ngModel)]="password1" name="password1">
+          <nz-form-explain>请输入新密码</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">确认新密码</nz-form-label>
+        <nz-form-control [nzValidateStatus]="password2Status.text" [nzSpan]="12" (change)="handlePassword2Change($event)" nzHasFeedback>
+          <input nz-input type="password" [(ngModel)]="password2" name="password2">
+          <nz-form-explain>确认新密码</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+    <nz-form-item>
+      <nz-form-control [nzOffset]="5" [nzSpan]="12">
+        <button nz-button nzType="primary" [disabled]="!valid" (click)="update()">修改</button>
+      </nz-form-control>
+    </nz-form-item>
+  </nz-tab>
+</nz-tabset>

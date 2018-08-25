@@ -1,0 +1,35 @@
+<ng-container *ngIf="hasExam">
+  <p>
+    当前时间：{{nowDatetime}}
+  </p>
+  <p>
+    开考时间：{{datetime}}
+  </p>
+
+  <div style="width: 100%;margin-top: 30px;">
+    <form nz-form>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">姓名</nz-form-label>
+        <nz-form-control [nzValidateStatus]="status.name.text" [nzSpan]="12" (change)="handleNameChange($event)" nzHasFeedback>
+          <input nz-input [(ngModel)]="student.name" name="realName">
+          <nz-form-explain>请输入姓名</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-label [nzSpan]="5">考号</nz-form-label>
+        <nz-form-control [nzValidateStatus]="status.number.text" [nzSpan]="12" (change)="handleNumberChange($event)" nzHasFeedback>
+          <input nz-input [(ngModel)]="student.number" name="number">
+          <nz-form-explain>请输入考号</nz-form-explain>
+        </nz-form-control>
+      </nz-form-item>
+      <nz-form-item>
+        <nz-form-control [nzOffset]="5" [nzSpan]="12">
+          <button nz-button nzType="primary" [disabled]="!loginFormValid" (click)="verify()">选择考卷</button>
+        </nz-form-control>
+      </nz-form-item>
+    </form>
+  </div>
+</ng-container>
+<ng-container *ngIf="!hasExam">
+<h1>暂时没有可以参加的考试</h1>
+</ng-container>

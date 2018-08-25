@@ -1,0 +1,82 @@
+<ng-container *ngIf="!isEditView">
+  <nz-table #basicTable [(nzData)]="examList">
+    <thead>
+      <tr>
+        <th>编号</th>
+        <th>开考时间</th>
+        <th>状态</th>
+        <th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td><a  (click)="view(data)">{{data.number}}</a></td>
+        <td>{{formatDate(data.start)}}</td>
+        <td>{{data.status === 0 ? '未开始' : (data.status === 1 ? '考试中': '考试结束')}}</td>
+        <td>
+          <nz-popconfirm *ngIf="data.status === 0" [nzTitle]="activeExamTitle" (nzOnConfirm)="activeExam(data)">
+            <a nz-popconfirm class="text-danger"> 开始考试</a>
+          </nz-popconfirm>
+          <a *ngIf="data.status === 1" (click)="finishExam(data)"> 标记考试完成</a>
+          <ng-container *ngIf="data.status === 0">
+            <nz-divider nzType="vertical"></nz-divider>
+            <a (click)="edit(data)">
+              <i class="anticon anticon-edit"></i> 编辑</a>
+            <nz-divider nzType="vertical"></nz-divider>
+            <nz-popconfirm [nzTitle]="'确定删除？'" (nzOnConfirm)="delete(data)">
+              <a nz-popconfirm class="text-danger">
+                <i class="anticon anticon-delete"></i> 删除
+              </a>
+            </nz-popconfirm>
+          </ng-container>
+
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</ng-container>
+<ng-container *ngIf="isEditView">
+  <a (click)="cancelEdit()">
+    <i class="anticon anticon-rollback"></i> 取消编辑
+  </a>
+  <nz-divider></nz-divider>
+  <app-admin-exam-add [exam]="editExam"></app-admin-exam-add>
+</ng-container>
+
+<nz-modal *ngIf="isDetailView" [(nzVisible)]="isDetailView" nzTitle="详情" [nzFooter]="modalFooter" (nzOnCancel)="cancelDetailView()">
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">编号</nz-form-label>
+      <p style="padding-top: 10px;">{{detailExam.number}}</p>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">开始时间</nz-form-label>
+      <p style="padding-top: 10px;">{{formatDate(detailExam.start)}}</p>
+    </nz-form-item>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="5">时长</nz-form-label>
+      <p style="padding-top: 10px;">{{detailExam.minute}}</p>
+    </nz-form-item>
+  </form>
+
+  <nz-table #basicTable [(nzData)]="studentList">
+    <thead>
+      <tr>
+        <th>姓名</th>
+        <th>考号</th>
+        <th>试卷编号</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{data.name}}</td>
+        <td>{{data.number}}</td>
+        <td>{{data.paperNumber}}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+
+  <ng-template #modalFooter>
+      <button nz-button nzType="default" (click)="cancelDetailView()">关闭</button>
+    </ng-template>
+</nz-modal>

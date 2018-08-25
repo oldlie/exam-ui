@@ -1,0 +1,44 @@
+<nz-affix nzOffsetTop="0">
+  <div nz-row nzGutter="8" style="margin-bottom: 15px; background-color: #ffffff; border-bottom: 1px solid #666;">
+    <div nz-col nzSpan=24>
+      <div *ngIf="isCheckView" style="float: right;">
+        <button nz-button nzType="default" (click)="refresh()">随机生成下一组考卷</button>
+      </div>
+      <div *ngIf="!isCheckView" style="float: right; margin-top: 10px;">
+        <button nz-button nzType="primary" (click)="submit()" [disabled]="!isShowPaper">交卷</button>
+      </div>
+      <div>
+        <p>考试时间：{{starttime}} - {{endtime}}</p>
+        <p>当前时间：{{lefttime}}</p>
+      </div>
+    </div>
+  </div>
+</nz-affix>
+<div *ngIf="isCheckView" nz-row nzGutter="8">
+  <div nz-col nzSpan=24>
+    <p>点击选择考卷：</p>
+  </div>
+</div>
+<div nz-row nzGutter="8" *ngIf="isCheckView">
+  <div nz-col [nzSpan]="6" *ngFor="let paper of numberList" style="margin: 15px 0;">
+    <nz-popconfirm [nzTitle]="'确定选择' + paper + '？'" (nzOnConfirm)="check(paper)">
+      <nz-card style="width:100%;" nz-popconfirm>
+        <a>{{paper}}</a>
+      </nz-card>
+    </nz-popconfirm>
+  </div>
+</div>
+
+<div nz-row>
+  <div nzSpan="24">
+    <h1>{{tip}}</h1>
+  </div>
+</div>
+
+<div *ngIf="!isCheckView">
+  <div nz-row *ngIf="isShowPaper">
+    <div nzSpan="24">
+      <div *ngIf="paper" [innerHTML]="paper.content"></div>
+    </div>
+  </div>
+</div>

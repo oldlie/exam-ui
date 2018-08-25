@@ -1,0 +1,28 @@
+<form nz-form>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">编号</nz-form-label>
+    <nz-form-control [nzValidateStatus]="numberStatus.text" [nzSpan]="12" (change)="handleNumberChange($event)" nzHasFeedback>
+      <input nz-input [(ngModel)]="paper.number" name="number">
+      <nz-form-explain>请输入编号</nz-form-explain>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-label [nzSpan]="5">状态</nz-form-label>
+    <nz-form-control>
+      <nz-select name="status" style="width: 120px;" [(ngModel)]="paper.status" nzPlaceHolder="Choose">
+        <nz-option nzValue="0" nzLabel="可编辑"></nz-option>
+        <nz-option nzValue="1" nzLabel="激活"></nz-option>
+      </nz-select>
+    </nz-form-control>
+  </nz-form-item>
+  <nz-form-item>
+    <div [froalaEditor]="options" [(froalaModel)]="paper.content">Hello, Froala!</div>
+  </nz-form-item>
+  <nz-form-item>
+    <nz-form-control [nzSpan]="12">
+      <button nz-button (click)="preview()">预览</button>
+      &nbsp;
+      <button nz-button nzType="primary" (click)="save()">保存</button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
